@@ -1,44 +1,47 @@
-import random
-class TrieNode:
-    def __init__(self,val=None, left = None, right = None):
-        self.val = val
-        self.left = left
-        self.right = right
+class Trie:
+    def __init__(self):
+        self.children = [None] * 26
+        self.is_end = False
 
-def insert(node:TrieNode, val:str):
-        if len(val) == 0:
-            return node
-        
-        if node is None:
-            return TrieNode(val[0])
-        
-        if node.val == val[0]:
-            node.left = TrieNode.insert(node.left,val[1:])
-        
-        else:
-            node.right = TrieNode.insert(node.right,val)
-        
-        return node
 
-def preorder(node: TrieNode):
-    if node:
-        print(node.val)
-        preorder(node.left)
-        preorder(node.right)
+def insert(node: Trie, word: str):
+    if node is None:
+        node = Trie()
 
+    current = node
+    for char in word:
+        idx = ord(char) - ord('a')
+        if current.children[idx] is None:
+            current.children[idx] = Trie()
+
+        current = current.children[idx]
+
+    current.is_end = True
+    return node
+
+#Incomplete implementation of autocomplete
+# def autocomplete(node:Trie,val:str):
+#     current = node
+#     store = []
+#     for i in val:
+#         idx = ord(i) - ord('a')
+#         if current.children[idx] is None:
+#             return []
+#         else:
+#             store.append(current.children)
+
+#         current = current.children[idx]
+        
+            
+#     print(store)
 
 def main():
-
-    first_val = input("Input first val: ")
-    second_val = input("Input second val")
-
     node = None
-    for _ in first_val:
-        node = insert(node, first_val.lower())
-    for _ in second_val:
-        node = insert(node,second_val)
-
-    preorder(node)
+    name = input("")
+    
+    node = insert(node,name)
+    # autocomplete(node,"da")
+   
 
 if __name__ == "__main__":
     main()        
