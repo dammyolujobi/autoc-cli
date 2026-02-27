@@ -19,28 +19,37 @@ def insert(node: Trie, word: str):
     current.is_end = True
     return node
 
-#Incomplete implementation of autocomplete
-# def autocomplete(node:Trie,val:str):
-#     current = node
-#     store = []
-#     for i in val:
-#         idx = ord(i) - ord('a')
-#         if current.children[idx] is None:
-#             return []
-#         else:
-#             store.append(current.children)
 
-#         current = current.children[idx]
+def autocomplete(node:Trie,val:str):
+    current = node
+    result = []
+    for i in val:
+        idx = ord(i) - ord('a')
+        if current.children[idx] is None:
+            return []
         
-            
-#     print(store)
+        current = current.children[idx]
+    collect_all(current,prefix=val,results= result)
+    return result[0]
+
+         
+def collect_all(node:Trie, prefix:str, results:list):
+    if node.is_end:
+        results.append(prefix)
+    for i in range(26):
+        if node.children[i] is not None:
+            collect_all(node.children[i],prefix + chr(ord('a') + i),results)
+
+
 
 def main():
     node = None
-    name = input("")
-    
-    node = insert(node,name)
-    # autocomplete(node,"da")
+    for i in range(5):
+        name = input("Enter the full word: ").lower()
+        
+        node = insert(node,name)
+    prefix = input("Enter the word you want to predict: ")
+    print(autocomplete(node,prefix))
    
 
 if __name__ == "__main__":
