@@ -7,15 +7,13 @@ class Trie:
 def insert(node: Trie, word: str):
     if node is None:
         node = Trie()
-
+        
     current = node
     for char in word:
         idx = ord(char) - ord('a')
         if current.children[idx] is None:
             current.children[idx] = Trie()
-
         current = current.children[idx]
-
     current.is_end = True
     return node
 
@@ -30,7 +28,12 @@ def autocomplete(node:Trie,val:str):
         
         current = current.children[idx]
     collect_all(current,prefix=val,results= result)
-    return result[0]
+    maximum = len(result[0])
+    for i in result:
+        if maximum > len(i):
+            maximum = len(i)
+            value = i
+    return value
 
          
 def collect_all(node:Trie, prefix:str, results:list):
